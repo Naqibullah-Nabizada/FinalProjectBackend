@@ -2,7 +2,6 @@ import express from "express";
 
 import { createMAFees, deleteMAFees, getMAFees, searchMAFees, singleMAFees, updateMAFees } from "../../controllers/income/MAFeesController.js";
 
-
 const router = express.Router();
 
 router.get("/MAFees", getMAFees);

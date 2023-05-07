@@ -2,7 +2,6 @@ import express from "express";
 
 import { createMAForm, deleteMAForm, getMAForms, singleMAForm, updateMAForm } from "../../controllers/income/MAFormController.js";
 
-
 const router = express.Router();
 
 router.get("/MAForms", getMAForms);

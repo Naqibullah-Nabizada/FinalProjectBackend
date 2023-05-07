@@ -11,25 +11,25 @@ export const getIdCards = async (req, res) => {
   }
 }
 
-//! Get Single IdCard
+//! Get Search IdCard
 export const singleIdCard = async (req, res) => {
   try {
-    const response = await IdCard.findAll({ where: { reference: req.params.query } });
+    const response = await IdCard.findAll({ where: { reference: req.params.search } });
     res.json(response);
   } catch (error) {
     console.log(error);
   }
 }
 
-//! Search IdCard
-export const searchIdCard = async (req, res) => {
-  try {
-    const response = await IdCard.findOne({ where: { reference: req.params.search } });
-    res.json(response);
-  } catch (error) {
-    console.log(error);
-  }
-}
+// //! Search IdCard
+// export const searchIdCard = async (req, res) => {
+//   try {
+//     const response = await IdCard.findOne({ where: { reference: req.params.search } });
+//     res.json(response);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 //! Create IdCard
 export const createIdCard = async (req, res) => {
