@@ -1,5 +1,6 @@
 import express from "express";
 
+
 import { createIdCard, deleteIdCard, getIdCards, singleIdCard, updateIdCard } from "../../controllers/income/IdCardController.js";
 
 

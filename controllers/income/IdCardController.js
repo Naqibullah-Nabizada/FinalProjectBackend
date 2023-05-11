@@ -1,10 +1,18 @@
 import path from "path";
+import { Op } from "sequelize";
 import IdCard from "../../models/income/IdCard.js";
 
 //! Get All IdCards
 export const getIdCards = async (req, res) => {
   try {
-    const response = await IdCard.findAll();
+    const response = await IdCard.findAll({
+      where: {
+        pendant_num: {
+          [Op.not]: null
+          // [Op.is]: null
+        }
+      }
+    });
     res.json(response);
   } catch (error) {
     console.log(error.message)
@@ -14,7 +22,19 @@ export const getIdCards = async (req, res) => {
 //! Get Search IdCard
 export const singleIdCard = async (req, res) => {
   try {
-    const response = await IdCard.findAll({ where: { reference: req.params.search } });
+    console.log(req.params)
+    const response = await IdCard.findAll({
+      where: {
+        [Op.or]: [
+          { reference: req.params.search },
+          { tariff_num: req.params.search },
+          { tariff_date: req.params.search },
+          { pendant_num: req.params.search },
+          { pendant_date: req.params.search }
+        ],
+      }
+
+    });
     res.json(response);
   } catch (error) {
     console.log(error);
