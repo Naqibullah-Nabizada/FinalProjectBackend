@@ -26,7 +26,10 @@ export const singleIdCard = async (req, res) => {
     const response = await IdCard.findAll({
       where: {
         [Op.or]: [
+          { name: req.params.search },
+          { father_name: req.params.search },
           { reference: req.params.search },
+          { year: req.params.search },
           { tariff_num: req.params.search },
           { tariff_date: req.params.search },
           { pendant_num: req.params.search },
