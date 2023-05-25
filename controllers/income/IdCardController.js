@@ -62,6 +62,7 @@ export const createIdCard = async (req, res) => {
   const count = req.body.count;
   const reference = req.body.reference;
   const cost = req.body.cost;
+  const year = req.body.year;
   const tariff_num = req.body.tariff_num;
   const tariff_date = req.body.tariff_date;
   const pendant_num = req.body.pendant_num;
@@ -75,6 +76,7 @@ export const createIdCard = async (req, res) => {
       reference: reference,
       count: count,
       cost: cost,
+      year: year,
       tariff_num: tariff_num,
       tariff_date: tariff_date,
       pendant_num: pendant_num,

@@ -26,10 +26,8 @@ const IdCard = db.define("id_cards", {
     allowNull: false,
   },
   year: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-    timezone: true,
+    type: DataTypes.STRING,
+    allowNull: false
   },
   tariff_num: {
     type: DataTypes.INTEGER,
@@ -37,10 +35,8 @@ const IdCard = db.define("id_cards", {
     unique: true
   },
   tariff_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-    timezone: true,
   },
   pendant_num: {
     type: DataTypes.INTEGER,
@@ -48,7 +44,7 @@ const IdCard = db.define("id_cards", {
     unique: true
   },
   pendant_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: true,
     timezone: true,
   },
@@ -60,8 +56,8 @@ const IdCard = db.define("id_cards", {
 
 export default IdCard;
 
-(
-  async () => {
-    await db.sync();
-  }
-)();
+// (
+//   async () => {
+//     await db.sync();
+//   }
+// )();

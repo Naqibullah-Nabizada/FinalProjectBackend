@@ -1,38 +1,38 @@
 import path from "path";
-import NocturnalFees from "../../models/income/NocturnalFees.js";
+import NMDTN from "../../models/income/NMDTN.js";
 
-//! Get All NocturnalFeess
-export const getNocturnalFeess = async (req, res) => {
+//! Get All NMDTNs
+export const getNMDTN = async (req, res) => {
   try {
-    const response = await NocturnalFees.findAll();
+    const response = await NMDTN.findAll();
     res.json(response);
   } catch (error) {
     console.log(error.message)
   }
 }
 
-//! Get Single NocturnalFees
-export const singleNocturnalFees = async (req, res) => {
+//! Get Single NMDTN
+export const singleNMDTN = async (req, res) => {
   try {
-    const response = await NocturnalFees.findOne({ where: { id: req.params.id } });
+    const response = await NMDTN.findOne({ where: { id: req.params.id } });
     res.json(response);
   } catch (error) {
     console.log(error);
   }
 }
 
-//! Search NocturnalFees
-export const searchNocturnalFees = async (req, res) => {
+//! Search NMDTN
+export const searchNMDTN = async (req, res) => {
   try {
-    const response = await NocturnalFees.findOne({ where: { reference: req.body.reference } });
+    const response = await NMDTN.findOne({ where: { reference: req.body.reference } });
     res.json(response);
   } catch (error) {
     console.log(error);
   }
 }
 
-//! Create NocturnalFees
-export const createNocturnalFees = async (req, res) => {
+//! Create NMDTN
+export const createNMDTN = async (req, res) => {
 
   const name = req.body.name;
   const father_name = req.body.father_name;
@@ -46,7 +46,7 @@ export const createNocturnalFees = async (req, res) => {
   const remark = req.body.remark;
 
   try {
-    const data = await NocturnalFees.create({
+    const data = await NMDTN.create({
       name: name,
       father_name: father_name,
       reference: reference,
@@ -65,13 +65,13 @@ export const createNocturnalFees = async (req, res) => {
 }
 
 
-//! Update NocturnalFees 
-export const updateNocturnalFees = async (req, res) => {
-  const NocturnalFees = await NocturnalFees.findOne({ where: { id: req.params.id } });
+//! Update NMDTN 
+export const updateNMDTN = async (req, res) => {
+  const NMDTN = await NMDTN.findOne({ where: { id: req.params.id } });
 
   let fileName = "";
   if (req.files === null) {
-    fileName = NocturnalFees.image;
+    fileName = NMDTN.image;
   } else {
     const title = req.body.title;
     const desc = req.body.desc;
@@ -97,7 +97,7 @@ export const updateNocturnalFees = async (req, res) => {
     const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
 
     try {
-      await NocturnalFees.update({
+      await NMDTN.update({
         title: title,
         desc: desc,
         author: author,
@@ -111,10 +111,10 @@ export const updateNocturnalFees = async (req, res) => {
   }
 }
 
-//! Delete NocturnalFees
-export const deleteNocturnalFees = async (req, res) => {
+//! Delete NMDTN
+export const deleteNMDTN = async (req, res) => {
   try {
-    const data = await NocturnalFees.destroy({ where: { id: req.params.id } });
+    const data = await NMDTN.destroy({ where: { id: req.params.id } });
     res.json(data);
   } catch (error) {
     console.log(error);

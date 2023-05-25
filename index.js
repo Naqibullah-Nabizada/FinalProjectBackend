@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 
 import IdCardRoute from "./router/income/IdCardRouter.js";
-import TwelvehSection from "./router/income/MAFormRouter.js";
+import NMDTNRoute from "./router/income/NMDTNFeesRouter.js";
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(express.static("public"));
 
 
 app.use(IdCardRoute);
-app.use(TwelvehSection);
+app.use(NMDTNRoute);
 
 
 app.listen(5000, () => console.log('server is running'));
