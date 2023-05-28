@@ -1,30 +1,54 @@
 import path from "path";
+import { Op } from "sequelize";
+
 import NMDTN from "../../models/income/NMDTN.js";
 
 //! Get All NMDTNs
 export const getNMDTN = async (req, res) => {
   try {
-    const response = await NMDTN.findAll();
+    let urlParts = req.url.split('/');
+    let query = urlParts[urlParts.length - 1];
+
+    const response = await NMDTN.findAll({
+      where: {
+        type: query
+      }
+    });
     res.json(response);
   } catch (error) {
     console.log(error.message)
   }
 }
 
-//! Get Single NMDTN
-export const singleNMDTN = async (req, res) => {
-  try {
-    const response = await NMDTN.findOne({ where: { id: req.params.id } });
-    res.json(response);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-//! Search NMDTN
+//! Get Search NMDTN
 export const searchNMDTN = async (req, res) => {
   try {
-    const response = await NMDTN.findOne({ where: { reference: req.body.reference } });
+
+    // let urlParts = req.url.split('/');
+    // let query = urlParts[urlParts.length - 1];
+    // let result = query.split(":")[0].substring(0, query.split(":")[0].length);
+    let urlParts = req.url.split('/');
+    let query = urlParts[urlParts.length - 1];
+    let result = query.split(":")[0].match(/[a-zA-Z]+/)[0];
+
+    const response = await NMDTN.findAll({
+      where: {
+        [Op.or]: [
+          { name: req.params.search },
+          { father_name: req.params.search },
+          { faculty: req.params.search },
+          { department: req.params.search },
+          { year: req.params.search },
+          { tariff_num: req.params.search },
+          { tariff_date: req.params.search },
+          { pendant_num: req.params.search },
+          { pendant_date: req.params.search }
+        ],
+        [Op.and]: [{
+          type: result
+        }]
+      }
+    });
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -36,9 +60,13 @@ export const createNMDTN = async (req, res) => {
 
   const name = req.body.name;
   const father_name = req.body.father_name;
-  const count = req.body.count;
-  const reference = req.body.reference;
-  const cost = req.body.cost;
+  const type = req.body.type;
+  const fees = req.body.fees;
+  const internel_fees = req.body.internel_fees;
+  const year = req.body.year;
+  const faculty = req.body.faculty;
+  const department = req.body.department;
+  const semester = req.body.semester;
   const tariff_num = req.body.tariff_num;
   const tariff_date = req.body.tariff_date;
   const pendant_num = req.body.pendant_num;
@@ -49,9 +77,13 @@ export const createNMDTN = async (req, res) => {
     const data = await NMDTN.create({
       name: name,
       father_name: father_name,
-      reference: reference,
-      count: count,
-      cost: cost,
+      faculty: faculty,
+      department: department,
+      semester: semester,
+      type: type,
+      fees: fees,
+      internel_fees: internel_fees,
+      year: year,
       tariff_num: tariff_num,
       tariff_date: tariff_date,
       pendant_num: pendant_num,

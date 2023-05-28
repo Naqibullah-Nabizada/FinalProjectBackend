@@ -22,7 +22,6 @@ export const getIdCards = async (req, res) => {
 //! Get Search IdCard
 export const singleIdCard = async (req, res) => {
   try {
-    console.log(req.params)
     const response = await IdCard.findAll({
       where: {
         [Op.or]: [

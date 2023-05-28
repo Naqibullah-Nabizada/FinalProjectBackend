@@ -25,7 +25,7 @@ const NMDTN = db.define("nmdtn_fees", {
     allowNull: false
   },
   year: {
-    type: DataTypes.DATE,
+    type: DataTypes.STRING,
     allowNull: false
   },
   semester: {
@@ -33,12 +33,12 @@ const NMDTN = db.define("nmdtn_fees", {
     allowNull: false
   },
   internel_fees: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0
   },
   fees: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0
   }
@@ -48,7 +48,7 @@ const NMDTN = db.define("nmdtn_fees", {
     allowNull: false
   },
   tariff_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false
   },
   pendant_num: {
@@ -56,7 +56,7 @@ const NMDTN = db.define("nmdtn_fees", {
     allowNull: true
   },
   pendant_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: true
   },
   remark: {
