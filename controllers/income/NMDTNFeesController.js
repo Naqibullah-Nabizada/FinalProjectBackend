@@ -14,6 +14,7 @@ export const getNMDTN = async (req, res) => {
         type: query
       }
     });
+    
     res.json(response);
   } catch (error) {
     console.log(error.message)

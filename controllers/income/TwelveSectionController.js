@@ -1,13 +1,23 @@
 import path from "path";
+import { Op } from "sequelize";
+
 import TwelveSection from "../../models/income/TwelveSection.js";
 
 //! Get All TwelveSection
 export const getTwelveSection = async (req, res) => {
   try {
-    const response = await TwelveSection.findAll();
+    
+    let urlParts = req.url.split('/');
+    let query = urlParts[urlParts.length - 1];
+
+    const response = await TwelveSection.findAll({
+      where: {
+        type: query
+      }
+    });
     res.json(response);
   } catch (error) {
-    console.log(error.message) 
+    console.log(error.message)
   }
 }
 
@@ -22,20 +32,20 @@ export const searchTwelveSection = async (req, res) => {
     const response = await TwelveSection.findAll({
       where: {
         [Op.or]: [
-          { fullname: req.params.search },
+          { name: req.params.search },
+          { father_name: req.params.search },
           { maktub_num: req.params.search },
           { reference: req.params.search },
           { year: req.params.search },
           { tariff_num: req.params.search },
-          { tariff_date: req.params.search },
           { pendant_num: req.params.search },
-          { pendant_date: req.params.search }
         ],
         [Op.and]: [{
           type: result
         }]
       }
     });
+    
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -56,9 +66,10 @@ export const singleTwelveSection = async (req, res) => {
 //! Create TwelveSection
 export const createTwelveSection = async (req, res) => {
 
-  const fullname = req.body.fullname;
+  const type = req.body.type;
+  const name = req.body.name;
+  const father_name = req.body.father_name;
   const maktub_num = req.body.maktub_num;
-  const date = req.body.date;
   const reference = req.body.reference;
   const year = req.body.year;
   const amount = req.body.amount;
@@ -71,9 +82,10 @@ export const createTwelveSection = async (req, res) => {
 
   try {
     const data = await TwelveSection.create({
-      fullname: fullname,
+      type: type,
+      name: name,
+      father_name: father_name,
       maktub_num: maktub_num,
-      date: date,
       reference: reference,
       year: year,
       amount: amount,

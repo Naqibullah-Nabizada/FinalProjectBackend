@@ -8,17 +8,17 @@ const TwelveSection = db.define("twelve_section", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  fullname: {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  father_name: {
     type: DataTypes.STRING,
     allowNull: false
   },
   maktub_num: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  date: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
   },
   reference: {
     type: DataTypes.STRING,
