@@ -3,24 +3,24 @@ import db from "../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const NMDTN = db.define("nmdtn_fees", {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  father_name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
+const TwelveSection = db.define("twelve_section", {
   type: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  faculty: {
+  fullname: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  department: {
+  maktub_num: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+  reference: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -28,28 +28,21 @@ const NMDTN = db.define("nmdtn_fees", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  semester: {
+  amount: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  desc: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  internel_fees: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0
-  },
-  fees: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0
-  }
-  ,
   tariff_num: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   tariff_date: {
     type: DataTypes.DATEONLY,
-    allowNull: false
+    allowNull: false,
   },
   pendant_num: {
     type: DataTypes.INTEGER,
@@ -63,11 +56,12 @@ const NMDTN = db.define("nmdtn_fees", {
   },
   remark: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: true,
+    defaultValue: null
   }
 });
 
-export default NMDTN;
+export default TwelveSection;
 
 // (
 //   async() => {

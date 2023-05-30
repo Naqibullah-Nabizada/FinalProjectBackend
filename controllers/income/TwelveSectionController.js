@@ -1,20 +1,51 @@
 import path from "path";
-import MAForm from "../../models/income/MAForm.js";
+import TwelveSection from "../../models/income/TwelveSection.js";
 
-//! Get All MAForms
-export const getMAForms = async (req, res) => {
+//! Get All TwelveSection
+export const getTwelveSection = async (req, res) => {
   try {
-    const response = await MAForm.findAll();
+    const response = await TwelveSection.findAll();
     res.json(response);
   } catch (error) {
     console.log(error.message) 
   }
 }
 
-//! Get Single MAForm
-export const singleMAForm = async (req, res) => {
+//! Get Search TwelveSection
+export const searchTwelveSection = async (req, res) => {
   try {
-    const response = await MAForm.findOne({ where: { id: req.params.id } });
+
+    let urlParts = req.url.split('/');
+    let query = urlParts[urlParts.length - 1];
+    let result = query.split(":")[0].match(/[a-zA-Z]+/)[0];
+
+    const response = await TwelveSection.findAll({
+      where: {
+        [Op.or]: [
+          { fullname: req.params.search },
+          { maktub_num: req.params.search },
+          { reference: req.params.search },
+          { year: req.params.search },
+          { tariff_num: req.params.search },
+          { tariff_date: req.params.search },
+          { pendant_num: req.params.search },
+          { pendant_date: req.params.search }
+        ],
+        [Op.and]: [{
+          type: result
+        }]
+      }
+    });
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//! Get Single TwelveSection
+export const singleTwelveSection = async (req, res) => {
+  try {
+    const response = await TwelveSection.findOne({ where: { id: req.params.id } });
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -22,8 +53,8 @@ export const singleMAForm = async (req, res) => {
 }
 
 
-//! Create MAForm
-export const createMAForm = async (req, res) => {
+//! Create TwelveSection
+export const createTwelveSection = async (req, res) => {
 
   const fullname = req.body.fullname;
   const maktub_num = req.body.maktub_num;
@@ -39,7 +70,7 @@ export const createMAForm = async (req, res) => {
   const remark = req.body.remark;
 
   try {
-    const data = await MAForm.create({
+    const data = await TwelveSection.create({
       fullname: fullname,
       maktub_num: maktub_num,
       date: date,
@@ -60,13 +91,13 @@ export const createMAForm = async (req, res) => {
 }
 
 
-//! Update MAForm 
-export const updateMAForm = async (req, res) => {
-  const MAForm = await MAForm.findOne({ where: { id: req.params.id } });
+//! Update TwelveSection 
+export const updateTwelveSection = async (req, res) => {
+  const TwelveSection = await TwelveSection.findOne({ where: { id: req.params.id } });
 
   let fileName = "";
   if (req.files === null) {
-    fileName = MAForm.image;
+    fileName = TwelveSection.image;
   } else {
     const title = req.body.title;
     const desc = req.body.desc;
@@ -92,7 +123,7 @@ export const updateMAForm = async (req, res) => {
     const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
 
     try {
-      await MAForm.update({
+      await TwelveSection.update({
         title: title,
         desc: desc,
         author: author,
@@ -106,10 +137,10 @@ export const updateMAForm = async (req, res) => {
   }
 }
 
-//! Delete MAForm
-export const deleteMAForm = async (req, res) => {
+//! Delete TwelveSection
+export const deleteTwelveSection = async (req, res) => {
   try {
-    const data = await MAForm.destroy({ where: { id: req.params.id } });
+    const data = await TwelveSection.destroy({ where: { id: req.params.id } });
     res.json(data);
   } catch (error) {
     console.log(error);

@@ -24,9 +24,6 @@ export const getNMDTN = async (req, res) => {
 export const searchNMDTN = async (req, res) => {
   try {
 
-    // let urlParts = req.url.split('/');
-    // let query = urlParts[urlParts.length - 1];
-    // let result = query.split(":")[0].substring(0, query.split(":")[0].length);
     let urlParts = req.url.split('/');
     let query = urlParts[urlParts.length - 1];
     let result = query.split(":")[0].match(/[a-zA-Z]+/)[0];

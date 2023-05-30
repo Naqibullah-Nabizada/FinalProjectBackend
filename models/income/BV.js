@@ -3,41 +3,29 @@ import db from "../../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const MAForm = db.define("twelve_section", {
+const MAForm = db.define("bv_fees", {
   type: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  fullname: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  maktub_num: {
+  father_name: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  date: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-    timezone: true,
   },
   reference: {
     type: DataTypes.STRING,
     allowNull: false
   },
   year: {
-    type: DataTypes.DATE,
+    type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-    timezone: true,
   },
   amount: {
     type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  desc: {
-    type: DataTypes.STRING,
     allowNull: false
   },
   tariff_num: {
@@ -46,23 +34,23 @@ const MAForm = db.define("twelve_section", {
     unique: true
   },
   tariff_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-    timezone: true,
   },
   pendant_num: {
     type: DataTypes.INTEGER,
-    allowNull: true
+    allowNull: true,
+    defaultValue: null
   },
   pendant_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: true,
-    timezone: true,
+    defaultValue: null
   },
   remark: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: true,
+    defaultValue: null
   }
 });
 

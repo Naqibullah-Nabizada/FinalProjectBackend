@@ -1,21 +1,34 @@
 import path from "path";
 import { Op } from "sequelize";
-import IdCard from "../../models/income/IdCard.js";
 
-//! Get All IdCards
-export const getIdCards = async (req, res) => {
+import BV from "../../models/income/BV.js";
+
+//! Get All BVs
+export const getBV = async (req, res) => {
   try {
-    const response = await IdCard.findAll();
+    let urlParts = req.url.split('/');
+    let query = urlParts[urlParts.length - 1];
+
+    const response = await BV.findAll({
+      where: {
+        type: query
+      }
+    });
     res.json(response);
   } catch (error) {
     console.log(error.message)
   }
 }
 
-//! Get Search IdCard
-export const singleIdCard = async (req, res) => {
+//! Get Search BV
+export const searchBV = async (req, res) => {
   try {
-    const response = await IdCard.findAll({
+
+    let urlParts = req.url.split('/');
+    let query = urlParts[urlParts.length - 1];
+    let result = query.split(":")[0].match(/[a-zA-Z]+/)[0];
+
+    const response = await BV.findAll({
       where: {
         [Op.or]: [
           { name: req.params.search },
@@ -27,8 +40,10 @@ export const singleIdCard = async (req, res) => {
           { pendant_num: req.params.search },
           { pendant_date: req.params.search }
         ],
+        [Op.and]: [{
+          type: result
+        }]
       }
-
     });
     res.json(response);
   } catch (error) {
@@ -36,25 +51,15 @@ export const singleIdCard = async (req, res) => {
   }
 }
 
-// //! Search IdCard
-// export const searchIdCard = async (req, res) => {
-//   try {
-//     const response = await IdCard.findOne({ where: { reference: req.params.search } });
-//     res.json(response);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-//! Create IdCard
-export const createIdCard = async (req, res) => {
+//! Create BV
+export const createBV = async (req, res) => {
 
   const name = req.body.name;
   const father_name = req.body.father_name;
-  const count = req.body.count;
-  const reference = req.body.reference;
-  const cost = req.body.cost;
+  const type = req.body.type;
+  const amount = req.body.amount;
   const year = req.body.year;
+  const reference = req.body.reference;
   const tariff_num = req.body.tariff_num;
   const tariff_date = req.body.tariff_date;
   const pendant_num = req.body.pendant_num;
@@ -62,12 +67,12 @@ export const createIdCard = async (req, res) => {
   const remark = req.body.remark;
 
   try {
-    const data = await IdCard.create({
+    const data = await BV.create({
       name: name,
       father_name: father_name,
       reference: reference,
-      count: count,
-      cost: cost,
+      type: type,
+      amount: amount,
       year: year,
       tariff_num: tariff_num,
       tariff_date: tariff_date,
@@ -82,13 +87,13 @@ export const createIdCard = async (req, res) => {
 }
 
 
-//! Update IdCard 
-export const updateIdCard = async (req, res) => {
-  const IdCard = await IdCard.findOne({ where: { id: req.params.id } });
+//! Update BV 
+export const updateBV = async (req, res) => {
+  const BV = await BV.findOne({ where: { id: req.params.id } });
 
   let fileName = "";
   if (req.files === null) {
-    fileName = IdCard.image;
+    fileName = BV.image;
   } else {
     const title = req.body.title;
     const desc = req.body.desc;
@@ -114,7 +119,7 @@ export const updateIdCard = async (req, res) => {
     const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
 
     try {
-      await IdCard.update({
+      await BV.update({
         title: title,
         desc: desc,
         author: author,
@@ -128,10 +133,10 @@ export const updateIdCard = async (req, res) => {
   }
 }
 
-//! Delete IdCard
-export const deleteIdCard = async (req, res) => {
+//! Delete BV
+export const deleteBV = async (req, res) => {
   try {
-    const data = await IdCard.destroy({ where: { id: req.params.id } });
+    const data = await BV.destroy({ where: { id: req.params.id } });
     res.json(data);
   } catch (error) {
     console.log(error);
