@@ -32,13 +32,14 @@ const IdCard = db.define("id_cards", {
   tariff_num: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    unique: true
   },
   tariff_date: {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
   pendant_num: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: true,
     defaultValue: null
   },

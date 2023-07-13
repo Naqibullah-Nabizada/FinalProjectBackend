@@ -1,4 +1,3 @@
-import path from "path";
 import { Op } from "sequelize";
 
 import TwelveSection from "../../models/income/TwelveSection.js";
@@ -6,14 +5,14 @@ import TwelveSection from "../../models/income/TwelveSection.js";
 //! Get All TwelveSection
 export const getTwelveSection = async (req, res) => {
   try {
-    
+
     let urlParts = req.url.split('/');
     let query = urlParts[urlParts.length - 1];
 
     const response = await TwelveSection.findAll({
       where: {
         type: query
-      }
+      }, order: [['name', 'asc']]
     });
     res.json(response);
   } catch (error) {
@@ -45,7 +44,7 @@ export const searchTwelveSection = async (req, res) => {
         }]
       }
     });
-    
+
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -76,9 +75,6 @@ export const createTwelveSection = async (req, res) => {
   const desc = req.body.desc;
   const tariff_num = req.body.tariff_num;
   const tariff_date = req.body.tariff_date;
-  const pendant_num = req.body.pendant_num;
-  const pendant_date = req.body.pendant_date;
-  const remark = req.body.remark;
 
   try {
     const data = await TwelveSection.create({
@@ -92,9 +88,6 @@ export const createTwelveSection = async (req, res) => {
       desc: desc,
       tariff_num: tariff_num,
       tariff_date: tariff_date,
-      pendant_num: pendant_num,
-      pendant_date: pendant_date,
-      remark: remark,
     })
     res.json(data);
   } catch (error) {
@@ -103,49 +96,22 @@ export const createTwelveSection = async (req, res) => {
 }
 
 
-//! Update TwelveSection 
-export const updateTwelveSection = async (req, res) => {
-  const TwelveSection = await TwelveSection.findOne({ where: { id: req.params.id } });
+//! Pendante TwelveSection 
+export const pendanteTwelveSection = async (req, res) => {
+  const result = await TwelveSection.findOne({ where: { id: req.params.id } });
 
-  let fileName = "";
-  if (req.files === null) {
-    fileName = TwelveSection.image;
-  } else {
-    const title = req.body.title;
-    const desc = req.body.desc;
-    const author = req.body.author;
-    const time = req.body.time;
-    const file = req.files.image;
-    const fileSize = file.data.length;
-    const ext = path.extname(file.name);
-    const dateNow = Math.random(Date.now())
-    fileName = dateNow + ext;
-    const allowedType = ['.png', '.jpg', '.jpeg'];
+  const pendant_num = req.body.pendant_num;
+  const pendant_date = req.body.pendant_date;
+  const remark = req.body.remark;
 
-    if (!allowedType.includes(ext.toLocaleLowerCase())) {
-      return res.json({ msg: "image format is not valid" });
-    }
-
-    if (fileSize > 5000000) return res.json({ msg: 'image must be maximum 5 mb' })
-
-    file.mv(`./public/images/${fileName}`, async (err) => {
-      if (err) return res.json({ msg: err.message });
-    })
-
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
-
-    try {
-      await TwelveSection.update({
-        title: title,
-        desc: desc,
-        author: author,
-        time: time,
-        image: fileName,
-        url: url
-      }, { where: { id: req.params.id } })
-    } catch (error) {
-      console.log(error)
-    }
+  try {
+    await result.update({
+      pendant_num: pendant_num,
+      pendant_date: pendant_date,
+      remark: remark,
+    }, { where: { id: req.params.id } })
+  } catch (error) {
+    console.log(error)
   }
 }
 

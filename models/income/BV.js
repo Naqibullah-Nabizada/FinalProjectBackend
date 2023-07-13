@@ -38,7 +38,7 @@ const MAForm = db.define("bv_fees", {
     allowNull: false,
   },
   pendant_num: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: true,
     defaultValue: null
   },
