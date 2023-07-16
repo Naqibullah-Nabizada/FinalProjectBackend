@@ -52,7 +52,7 @@ export const searchTwelveSection = async (req, res) => {
 }
 
 //! Get Single TwelveSection
-export const singleTwelveSection = async (req, res) => {
+export const getSingleTwelveSection = async (req, res) => {
   try {
     const response = await TwelveSection.findOne({ where: { id: req.params.id } });
     res.json(response);
@@ -90,6 +90,47 @@ export const createTwelveSection = async (req, res) => {
       tariff_date: tariff_date,
     })
     res.json(data);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+//! Update TwelveSection 
+export const updateTwelveSection = async (req, res) => {
+  const result = await TwelveSection.findOne({ where: { id: req.params.id } });
+
+  const type = req.body.type;
+  const name = req.body.name;
+  const father_name = req.body.father_name;
+  const maktub_num = req.body.maktub_num;
+  const reference = req.body.reference;
+  const year = req.body.year;
+  const amount = req.body.amount;
+  const desc = req.body.desc;
+  const tariff_num = req.body.tariff_num;
+  const tariff_date = req.body.tariff_date;
+  const pendant_num = req.body.pendant_num;
+  const pendant_date = req.body.pendant_date;
+  const remark = req.body.remark;
+
+  try {
+    await result.update({
+      type: type,
+      name: name,
+      father_name: father_name,
+      maktub_num: maktub_num,
+      reference: reference,
+      year: year,
+      amount: amount,
+      desc: desc,
+      tariff_num: tariff_num,
+      tariff_date: tariff_date,
+      pendant_num: pendant_num,
+      pendant_date: pendant_date,
+      remark: remark,
+    }, { where: { id: req.params.id } })
   } catch (error) {
     console.log(error)
   }
