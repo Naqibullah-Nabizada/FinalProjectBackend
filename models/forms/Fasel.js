@@ -1,27 +1,28 @@
 import { Sequelize } from "sequelize";
 import db from "../../config/Database.js";
-import ChildBabs from "./ChildBab.js";
+import ParentBabs from "./ParentBab.js";
 
 const { DataTypes } = Sequelize;
 
-const Fasels = db.define("fasels", {
-  name: {
+const Fasel = db.define("fasel", {
+  parentBabsId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  code: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  description:{
-    type: DataTypes.TEXT
-  },
-  childBabsId:{
-    type: DataTypes.INTEGER,
+  desc: {
+    type: DataTypes.TEXT,
     allowNull: false
   }
 });
 
-ChildBabs.hasMany(Fasels);
-Fasels.belongsTo(ChildBabs, {'foreignKey': 'childBabsId'});
+ParentBabs.hasMany(Fasel);
+Fasel.belongsTo(ParentBabs, { 'foreignKey': 'parentBabsId' });
 
-export default Fasels;
+export default Fasel;
 
 // (
 //   async() => {

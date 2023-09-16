@@ -1,12 +1,13 @@
 import express from "express";
 
-import { createChildBab, getChildBab } from "../../controllers/forms/ChildBabController.js";
+import { createFaselDetail, getAllFaselDetail, getFaselDetail } from '../../controllers/forms/FaselDetailController.js';
 
 const router = express.Router();
 
-//! Child Bob
-router.get("/ChildBab", getChildBab);
-router.post("/ChildBab", createChildBab);
+//! Fasel
+router.get("/FaselDetail/", getAllFaselDetail);
+router.get("/FaselDetail/:id", getFaselDetail);
+router.post("/FaselDetail", createFaselDetail);
 // router.get("/BV/buildings:search", searchBV);
 // router.get("/BV/buildings/:id", getSingleBV);
 // router.put("/BV/:id", pendanteBV);

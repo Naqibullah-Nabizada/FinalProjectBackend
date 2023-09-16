@@ -8,9 +8,9 @@ import TwelveSectionRoute from "./router/income/TwelveSectionRouter.js";
 
 //! Forms
 
-import ChildBobRoute from "./router/forms/ChildBabRouter.js";
-import FaselRoute from "./router/forms/FaselRouter.js";
-import ParentBobRoute from "./router/forms/ParentBabRouter.js";
+import FaselDetailRoutes from "./router/forms/FaselDetailRoutes.js";
+import FaselRoutes from "./router/forms/FaselRoutes.js";
+import ParentBobRoutes from "./router/forms/ParentBabRoutes.js";
 
 //! Budget
 import AppropriationRouter from "./router/forms/budget/AppropriationsRouter.js";
@@ -29,9 +29,9 @@ app.use(BVRoute);
 app.use(TwelveSectionRoute);
 
 //! Forms
-app.use(ParentBobRoute);
-app.use(ChildBobRoute);
-app.use(FaselRoute);
+app.use(ParentBobRoutes);
+app.use(FaselRoutes);
+app.use(FaselDetailRoutes);
 
 //! Budget
 app.use(AppropriationRouter)

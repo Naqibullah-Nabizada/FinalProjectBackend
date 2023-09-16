@@ -1,30 +1,31 @@
-import ChildBabs from '../../models/forms/ChildBab.js';
-import Fasels from './../../models/forms/Fasel.js';
+import Fasel from '../../models/forms/Fasel.js';
+import ParentBabs from '../../models/forms/ParentBab.js';
 
-//! GET Fasel
+//! Get Fasel
 export const getFasel = async (req, res) => {
   try {
-    const response = await Fasels.findAll({
-      include: [ChildBabs]
+    const response = await Fasel.findAll({
+      include: [ParentBabs]
     });
     res.json(response);
   } catch (error) {
     console.log(error)
-  }
+  } 
 }
 
 
 //! Create Fasel
 export const createFasel = async (req, res) => {
 
-  const name = req.body.name;
-  const description = req.body.description;
-  const childBabsId = req.body.childBabsId;
+  const parentBabsId = req.body.parentBabsId;
+  const code = req.body.code;
+  const desc = req.body.desc;
+
   try {
-    const data = await Fasels.create({
-      name: name,
-      description: description,
-      childBabsId: childBabsId
+    const data = await Fasel.create({
+      parentBabsId: parentBabsId,
+      code: code,
+      desc: desc,
     })
     res.json(data);
   } catch (error) {
