@@ -22,6 +22,9 @@ const Appropriations = db.define("appropriations", {
     type: DataTypes.STRING,
     allowNull: false
   },
+  main_amount: {
+    type: DataTypes.INTEGER,
+  },
   amount: {
     type: DataTypes.INTEGER,
   },

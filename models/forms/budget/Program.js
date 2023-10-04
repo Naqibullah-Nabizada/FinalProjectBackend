@@ -11,8 +11,10 @@ const Program = db.define("programs", {
   desc: {
     type: DataTypes.TEXT,
     allowNull: false
-  }
-  ,
+  },
+  main_amount: {
+    type: DataTypes.INTEGER,
+  },
   amount: {
     type: DataTypes.INTEGER,
   }
