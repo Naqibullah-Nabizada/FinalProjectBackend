@@ -13,7 +13,7 @@ export const getAllUsers = async (req, res) => {
 };
 
 export const Register = async (req, res) => {
-  
+
   const { name, email, password, confPassword, isAdmin } = req.body;
 
   if (password !== confPassword) {
@@ -97,6 +97,7 @@ export const Login = async (req, res) => {
       }
     })
 
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000
@@ -124,7 +125,7 @@ export const Logout = async (req, res) => {
     if (!refreshToken) return res.json("توکن پیدا نشد")
     const user = await Users.findOne({ where: { refresh_token: refreshToken } });
     if (!user) return res.json("کاربر پیدا نشد")
-    cls = null
+    const cls = null
     await Users.update({
       refresh_token: cls
     }, {

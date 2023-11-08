@@ -1,6 +1,6 @@
 import express from "express";
 
-import { BakeryReport, BreadReport, BuildingReport, EnDeplomaReport, EnTranscriptReport, FarmaticProductsReport, GuaranteedRecursiveReport, GuestHouseReport, MAFeesReport, MAFormsReport, NationalNumReport, NocturnalFeesReport, PaperReport, ResearchFarmReport, VehicleReport, idCardReport, incomeReport } from "../../controllers/report/incomeReportContr.js";
+import { AgricultureFarm, AnimalClinicReport, BakeryReport, BicycleReport, BreadReport, BuildingReport, EnDeplomaReport, EnTranscriptReport, FarmaticProductsReport, GuaranteedRecursiveReport, GuestHouseReport, KabulBankReport, MAFeesReport, MAFormsReport, NationalNumReport, NocturnalFeesReport, PaperReport, VehicleReport, idCardReport, incomeReport } from "../../controllers/report/incomeReportContr.js";
 
 const router = express.Router();
 
@@ -18,10 +18,13 @@ router.get("/income/report/paper", PaperReport);
 router.get("/income/report/bread", BreadReport);
 router.get("/income/report/ma-forms", MAFormsReport);
 router.get("/income/report/national-num", NationalNumReport);
-router.get("/income/report/research-farms", ResearchFarmReport);
 router.get("/income/report/guest-house", GuestHouseReport);
 router.get("/income/report/farm-products", FarmaticProductsReport);
+router.get("/income/report/agriculture-farm", AgricultureFarm);
 router.get("/income/report/guaranteed", GuaranteedRecursiveReport);
+router.get("/income/report/animal-clinic", AnimalClinicReport);
+router.get("/income/report/kabul-bank", KabulBankReport);
+router.get("/income/report/bicycle", BicycleReport);
 
 
 export default router;

@@ -76,6 +76,32 @@ router.delete("/TwelveSection/:id", deleteTwelveSection);
 router.get("/TwelveSection/paper/:id", getSingleTwelveSection);
 router.put("/TwelveSection/paper/update/:id", updateTwelveSection);
 
+//! Animal Clinic
+router.get("/TwelveSection/animalClinic", getTwelveSection);
+router.get("/TwelveSection/animalClinic:search", searchTwelveSection);
+router.post("/TwelveSection", createTwelveSection);
+router.put("/TwelveSection/:id", pendanteTwelveSection);
+router.delete("/TwelveSection/:id", deleteTwelveSection);
+router.get("/TwelveSection/animalClinic/:id", getSingleTwelveSection);
+router.put("/TwelveSection/animalClinic/update/:id", updateTwelveSection);
+
+//! Kabul Bank
+router.get("/TwelveSection/kabulBank", getTwelveSection);
+router.get("/TwelveSection/kabulBank:search", searchTwelveSection);
+router.post("/TwelveSection", createTwelveSection);
+router.put("/TwelveSection/:id", pendanteTwelveSection);
+router.delete("/TwelveSection/:id", deleteTwelveSection);
+router.get("/TwelveSection/kabulBank/:id", getSingleTwelveSection);
+router.put("/TwelveSection/kabulBank/update/:id", updateTwelveSection);
+
+//! Bicycle 
+router.get("/TwelveSection/bicycle", getTwelveSection);
+router.get("/TwelveSection/bicycle:search", searchTwelveSection);
+router.post("/TwelveSection", createTwelveSection);
+router.put("/TwelveSection/:id", pendanteTwelveSection);
+router.delete("/TwelveSection/:id", deleteTwelveSection);
+router.get("/TwelveSection/bicycle/:id", getSingleTwelveSection);
+router.put("/TwelveSection/bicycle/update/:id", updateTwelveSection);
 
 
 export default router;

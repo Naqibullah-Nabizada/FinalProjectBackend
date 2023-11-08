@@ -13,7 +13,7 @@ export const refreshToken = async (req, res) => {
     if (!user[0]) return res.sendStatus(403);
     jwt.verify(
       refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
+      "ghf8hg908s8f67sf65s76da7da7",
       (err, decoded) => {
         if (err) return res.sendStatus(403);
         const userId = user[0].id;
@@ -22,11 +22,11 @@ export const refreshToken = async (req, res) => {
         const isAdmin = user[0].isAdmin;
         const accessToken = jwt.sign(
           { userId, name, email, isAdmin },
-          process.env.ACCESS_TOKEN_SECRET,
+          "89sd7f89sdf7sd87dfg897gd8fg7",
           {
-               expiresIn: "45s"
+            expiresIn: "45s"
           });
-          res.json({accessToken})
+        res.json({ accessToken })
       }
     );
   } catch (error) {

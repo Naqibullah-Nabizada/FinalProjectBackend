@@ -115,7 +115,7 @@ export const BakeryReport = async (req, res) => {
 export const BreadReport = async (req, res) => {
   try {
     const bread = await TwelveSection.findAll(
-      { where: { type: "bread" } }
+      { where: { type: "hostelBread" } }
     );
     res.json(bread);
   } catch (error) {
@@ -159,6 +159,18 @@ export const FarmaticProductsReport = async (req, res) => {
   }
 };
 
+//! AgricultureFarm Report
+export const AgricultureFarm = async (req, res) => {
+  try {
+    const agricultureFarm = await TwelveSection.findAll(
+      { where: { type: "agriculterFarm" } }
+    );
+    res.json(agricultureFarm);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //! Guaranteed Recursive Report
 export const GuaranteedRecursiveReport = async (req, res) => {
   try {
@@ -183,25 +195,38 @@ export const MAFormsReport = async (req, res) => {
   }
 };
 
-//! ResearchFarm Report
-export const ResearchFarmReport = async (req, res) => {
+
+//! Animal Clinic Report
+export const AnimalClinicReport = async (req, res) => {
   try {
-    const researchFarm = await TwelveSection.findAll(
-      { where: { type: "researchFarm" } }
+    const animal_clinic = await TwelveSection.findAll(
+      { where: { type: "animalClinic" } }
     );
-    res.json(researchFarm);
+    res.json(animal_clinic);
   } catch (error) {
     console.log(error);
   }
 };
 
-//! NationalNum Report
-export const NationalNum = async (req, res) => {
+//! Kabul Bank Report
+export const KabulBankReport = async (req, res) => {
   try {
-    const nationalNum = await TwelveSection.findAll(
-      { where: { type: "nationalNum" } }
+    const kabul_bank = await TwelveSection.findAll(
+      { where: { type: "kabulBank" } }
     );
-    res.json(nationalNum);
+    res.json(kabul_bank);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//! Bicycle Report
+export const BicycleReport = async (req, res) => {
+  try {
+    const bicycle = await TwelveSection.findAll(
+      { where: { type: "bicycle" } }
+    );
+    res.json(bicycle);
   } catch (error) {
     console.log(error);
   }
