@@ -12,6 +12,19 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+
+export const getSingleUser = async (req, res) => {
+  try {
+    const user = await Users.findOne({
+      where: { id: req.params.id }
+    });
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 export const Register = async (req, res) => {
 
   const { name, email, password, confPassword, isAdmin } = req.body;
