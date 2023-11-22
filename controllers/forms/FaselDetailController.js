@@ -169,7 +169,6 @@ export const paid = async (req, res) => {
 //! Update 
 
 export const updateFaselDetail = async (req, res) => {
-  const result = await FaselDetails.findOne({ where: { id: req.params.id } });
 
   const faselId = req.body.faselId;
   const desc = req.body.desc;
@@ -185,24 +184,74 @@ export const updateFaselDetail = async (req, res) => {
   const transfer = req.body.transfer;
   const commitment_transfer = req.body.commitment_transfer;
 
-  try {
-    const data = await result.update({
-      faselId: faselId,
-      desc: desc,
-      date: date,
-      reference: reference,
-      private_num: private_num,
-      refinement: refinement,
-      after_pay: after_pay,
-      befor_pay: befor_pay,
-      previous_considered: previous_considered,
-      commitment: commitment,
-      income: income,
-      transfer: transfer,
-      commitment_transfer: commitment_transfer,
-    })
-    res.json(data);
-  } catch (error) {
-    console.log(error)
+  if (parseFloat(befor_pay) + parseFloat(after_pay) >= 0) {
+
+    const fasel = await Fasel.findOne({ where: { id: faselId } });
+
+    if (fasel.amount >= parseFloat(after_pay) + parseFloat(befor_pay)) {
+
+      const result = await FaselDetails.findOne({ where: { id: req.params.id } });
+
+      const previes_after_pay = parseFloat(result.after_pay);
+      const previes_befor_pay = parseFloat(result.befor_pay);
+      const fasel_amount = parseFloat(fasel.amount);
+      const new_after_pay = parseFloat(after_pay);
+      const new_befor_pay = parseFloat(befor_pay);
+
+      fasel.update({ amount: fasel_amount - (new_after_pay + new_befor_pay) + (previes_after_pay + previes_befor_pay) });
+
+      try {
+        const data = await result.update({
+          faselId: faselId,
+          desc: desc,
+          date: date,
+          reference: reference,
+          private_num: private_num,
+          refinement: refinement,
+          after_pay: after_pay,
+          befor_pay: befor_pay,
+          previous_considered: previous_considered,
+          commitment: commitment,
+          income: income,
+          transfer: transfer,
+          commitment_transfer: commitment_transfer,
+        })
+        res.json(data);
+      } catch (error) {
+        console.log(error)
+      }
+
+    } else {
+      res.json({ error: "مقدار تخصیص بیشتر از مقدار بودجه است." })
+    }
   }
+
+
+
+
+
+
+
+
+
+  // try {
+  //   const data = await result.update({
+  //     faselId: faselId,
+  //     desc: desc,
+  //     date: date,
+  //     reference: reference,
+  //     private_num: private_num,
+  //     refinement: refinement,
+  //     after_pay: after_pay,
+  //     befor_pay: befor_pay,
+  //     previous_considered: previous_considered,
+  //     commitment: commitment,
+  //     income: income,
+  //     transfer: transfer,
+  //     commitment_transfer: commitment_transfer,
+  //   })
+  //   res.json(data);
+  // } catch (error) {
+  //   console.log(error)
+  // }
 }
