@@ -4,6 +4,10 @@ import db from "../../../config/Database.js";
 const { DataTypes } = Sequelize;
 
 const Appropriations = db.define("appropriations", {
+  year: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   code: {
     type: DataTypes.STRING,
     allowNull: false

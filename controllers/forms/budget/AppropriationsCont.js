@@ -1,10 +1,32 @@
 import { Op } from "sequelize";
 import Appropriations from "../../../models/forms/budget/Appropriations.js";
 
+import moment from "jalali-moment";
+
 //! Get all Appropriations
 export const getAllAppropriations = async (req, res) => {
   try {
-    const response = await Appropriations.findAll();
+    const response = await Appropriations.findAll(
+      {
+        where: { year: moment().format('jYYYY') },
+        order: [['year', 'Desc']]
+      }
+    );
+    res.json(response);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+//! Get all Appropriations
+export const getAppropriationsYears = async (req, res) => {
+  try {
+    const response = await Appropriations.findAll({
+      where: {year: moment().format('jYYYY')},
+      group: ['year']
+    });
     res.json(response);
   } catch (error) {
     console.log(error)
@@ -31,6 +53,7 @@ export const searchAppropriation = async (req, res) => {
     const response = await Appropriations.findAll({
       where: {
         [Op.or]: [
+          { year: req.params.search },
           { code: req.params.search },
           { dari_name: req.params.search },
 
@@ -50,6 +73,7 @@ export const searchAppropriation = async (req, res) => {
 //! Create Appropriation
 export const createAppropriation = async (req, res) => {
 
+  const year = req.body.year;
   const code = req.body.code;
   const dari_name = req.body.dari_name;
   const pashto_name = req.body.pashto_name;
@@ -59,6 +83,7 @@ export const createAppropriation = async (req, res) => {
 
   try {
     const data = await Appropriations.create({
+      year: year,
       code: code,
       dari_name: dari_name,
       pashto_name: pashto_name,
@@ -79,6 +104,7 @@ export const createAppropriation = async (req, res) => {
 export const updateAppropriation = async (req, res) => {
   const result = await Appropriations.findOne({ where: { id: req.params.id } });
 
+  const year = req.body.year;
   const code = req.body.code;
   const dari_name = req.body.dari_name;
   const pashto_name = req.body.pashto_name;
@@ -88,6 +114,7 @@ export const updateAppropriation = async (req, res) => {
 
   try {
     const data = await result.update({
+      year: year,
       code: code,
       dari_name: dari_name,
       pashto_name: pashto_name,

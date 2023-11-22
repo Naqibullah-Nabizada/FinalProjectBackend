@@ -9,12 +9,21 @@ const Fasel = db.define("fasel", {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  year: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   code: {
     type: DataTypes.STRING,
     allowNull: false
   },
   desc: {
     type: DataTypes.TEXT,
+    allowNull: false
+  }
+  ,
+  main_amount: {
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   amount: {

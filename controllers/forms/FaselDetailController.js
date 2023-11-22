@@ -6,6 +6,7 @@ import FaselDetails from '../../models/forms/FaselDetails.js';
 export const getAllFaselDetail = async (req, res) => {
   try {
     const response = await FaselDetails.findAll({
+      order: [['id', 'DESC']],
       include: [Fasel]
     });
     res.json(response);
@@ -71,34 +72,57 @@ export const createFaselDetail = async (req, res) => {
   const reference = req.body.reference;
   const private_num = req.body.private_num;
   const refinement = req.body.refinement;
-  const after_pay = req.body.after_pay;
-  const befor_pay = req.body.befor_pay;
+  let after_pay = req.body.after_pay;
+  let befor_pay = req.body.befor_pay;
   const previous_considered = req.body.previous_considered;
   const commitment = req.body.commitment;
   const income = req.body.income;
   const transfer = req.body.transfer;
   const commitment_transfer = req.body.commitment_transfer;
 
-  try {
-    const data = await FaselDetails.create({
-      faselId: faselId,
-      desc: desc,
-      date: date,
-      reference: reference,
-      private_num: private_num,
-      refinement: refinement,
-      after_pay: after_pay,
-      befor_pay: befor_pay,
-      previous_considered: previous_considered,
-      commitment: commitment,
-      income: income,
-      transfer: transfer,
-      commitment_transfer: commitment_transfer,
-    })
-    res.json(data);
-  } catch (error) {
-    console.log(error)
+  if (after_pay || befor_pay > 0) {
+
+    const fasel = await Fasel.findOne({ where: { id: faselId } });
+
+    if (befor_pay === "") {
+      befor_pay = 0;
+    }
+    if (after_pay === "") {
+      after_pay = 0;
+    }
+
+    if (fasel.amount >= (parseFloat(befor_pay) + parseFloat(after_pay))) {
+
+      try {
+        const data = await FaselDetails.create({
+          faselId: faselId,
+          desc: desc,
+          date: date,
+          reference: reference,
+          private_num: private_num,
+          refinement: refinement,
+          after_pay: after_pay,
+          befor_pay: befor_pay,
+          previous_considered: previous_considered,
+          commitment: commitment,
+          income: income,
+          transfer: transfer,
+          commitment_transfer: commitment_transfer,
+        })
+        res.json(data);
+
+      } catch (error) {
+        console.log(error)
+      }
+
+      fasel.update({ amount: fasel.amount - (parseFloat(befor_pay) + parseFloat(after_pay)) })
+
+    } else {
+      res.json({ error: "مقدار پرداخت بیشتر از مقدار بودجه است." })
+    }
   }
+
+
 }
 
 

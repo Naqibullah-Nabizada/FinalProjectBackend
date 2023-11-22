@@ -31,10 +31,12 @@ const FaselDetails = db.define("faselDetails", {
   },
   after_pay: {
     type: DataTypes.INTEGER,
+    defaultValue: 0,
     allowNull: false
   },
   befor_pay: {
     type: DataTypes.INTEGER,
+    defaultValue: 0,
     allowNull: false
   },
   previous_considered: {

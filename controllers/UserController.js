@@ -44,10 +44,7 @@ export const Register = async (req, res) => {
       return res.json({ error: "ایمیل قبلا ثبت نام کرده است" });
     }
     await Users.create({
-      name: name,
-      email: email,
-      password: hashPassword,
-      isAdmin: isAdmin,
+      name: name, email: email, password: hashPassword, isAdmin: isAdmin,
     });
     res.json({
       message: "ثبت نام موفقیت آمیز بود"
@@ -60,13 +57,7 @@ export const Register = async (req, res) => {
 export const Login = async (req, res) => {
 
   try {
-
-    const user = await Users.findAll({
-      where: {
-        email: req.body.email,
-      },
-    });
-
+    const user = await Users.findAll({ where: { email: req.body.email, }, });
     const match = await bcrypt.compare(req.body.password, user[0].password);
     if (!match) {
       return res.json({
@@ -80,10 +71,7 @@ export const Login = async (req, res) => {
     const isAdmin = user[0].isAdmin;
 
     const accessToken = jwt.sign({
-      userId,
-      name,
-      email,
-      isAdmin
+      userId, name, email, isAdmin
     },
       "89sd7f89sdf7sd87dfg897gd8fg7", {
       expiresIn: "45s"
@@ -91,16 +79,12 @@ export const Login = async (req, res) => {
     );
 
     const refreshToken = jwt.sign({
-      userId,
-      name,
-      email,
-      isAdmin
+      userId, name, email, isAdmin
     },
       "ghf8hg908s8f67sf65s76da7da7", {
       expiresIn: "1d"
     }
     )
-
 
     await Users.update({
       refresh_token: refreshToken
@@ -110,20 +94,11 @@ export const Login = async (req, res) => {
       }
     })
 
-
     res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000
+      httpOnly: true, maxAge: 24 * 60 * 60 * 1000
     })
 
-    res.json({
-      userId,
-      name,
-      email,
-      isAdmin,
-      accessToken,
-      msg: "شما با موفقیت وارد شدید"
-    });
+    res.json({ userId, name, email, isAdmin, accessToken, msg: "شما با موفقیت وارد شدید" });
   } catch (error) {
     res.json({
       error: "کاربر وجود ندارد"
