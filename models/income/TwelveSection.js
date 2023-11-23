@@ -48,6 +48,7 @@ const TwelveSection = db.define("twelve_section", {
   pendant_num: {
     type: DataTypes.STRING,
     allowNull: true,
+    unique: true,
     defaultValue: null
   },
   pendant_date: {

@@ -56,6 +56,7 @@ const NMDTN = db.define("nmdtn_fees", {
   pendant_num: {
     type: DataTypes.STRING,
     allowNull: true,
+    unique: true,
     defaultValue: null
   },
   pendant_date: {

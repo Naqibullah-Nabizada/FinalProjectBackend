@@ -12,6 +12,7 @@ export const YearlyReportForms = async (req, res) => {
     const forms = await FaselDetails.findAll({
       attributes: [
         'faselId',
+        'date',
         'desc',
         [Sequelize.literal('SUM(befor_pay)'), 'befor_pay'],
         [Sequelize.literal('SUM(after_pay)'), 'after_pay'],

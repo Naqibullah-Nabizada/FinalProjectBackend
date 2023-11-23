@@ -91,7 +91,7 @@ export const createTwelveSection = async (req, res) => {
     })
     res.json(data);
   } catch (error) {
-    console.log(error)
+    res.json({ error: "نمبر تعرفه قبلا ثبت شده است." })
   }
 }
 
@@ -152,7 +152,7 @@ export const pendanteTwelveSection = async (req, res) => {
       remark: remark,
     }, { where: { id: req.params.id } })
   } catch (error) {
-    console.log(error)
+    res.json({ error: "نمبر آویز قبلا ثبت شده است." })
   }
 }
 

@@ -41,6 +41,7 @@ const IdCard = db.define("id_cards", {
   pendant_num: {
     type: DataTypes.STRING,
     allowNull: true,
+    unique: true,
     defaultValue: null
   },
   pendant_date: {

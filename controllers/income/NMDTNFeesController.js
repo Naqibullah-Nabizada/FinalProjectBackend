@@ -94,7 +94,7 @@ export const createNMDTN = async (req, res) => {
     })
     res.json(data);
   } catch (error) {
-    console.log(error)
+    res.json({ error: "نمبر تعرفه قبلا ثبت شده است." })
   }
 }
 
@@ -103,40 +103,18 @@ export const createNMDTN = async (req, res) => {
 export const pendanteNMDTN = async (req, res) => {
   const result = await NMDTN.findOne({ where: { id: req.params.id } });
 
-  const name = req.body.name;
-  const father_name = req.body.father_name;
-  const type = req.body.type;
-  const fees = req.body.fees;
-  const internel_fees = req.body.internel_fees;
-  const year = req.body.year;
-  const faculty = req.body.faculty;
-  const department = req.body.department;
-  const semester = req.body.semester;
-  const tariff_num = req.body.tariff_num;
-  const tariff_date = req.body.tariff_date;
   const pendant_num = req.body.pendant_num;
   const pendant_date = req.body.pendant_date;
   const remark = req.body.remark;
 
   try {
     await result.update({
-      name: name,
-      father_name: father_name,
-      faculty: faculty,
-      department: department,
-      semester: semester,
-      type: type,
-      fees: fees,
-      internel_fees: internel_fees,
-      year: year,
-      tariff_num: tariff_num,
-      tariff_date: tariff_date,
       pendant_num: pendant_num,
       pendant_date: pendant_date,
       remark: remark,
     }, { where: { id: req.params.id } })
   } catch (error) {
-    console.log(error)
+    res.json({ error: "نمبر آویز قبلا ثبت شده است." })
   }
 }
 
