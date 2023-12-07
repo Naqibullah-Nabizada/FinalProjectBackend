@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import BV from "../../models/income/BV.js";
 import IdCard from "../../models/income/IdCard.js";
 import NMDTN from "../../models/income/NMDTN.js";
@@ -19,7 +20,7 @@ export const idCardReport = async (req, res) => {
 export const NocturnalFeesReport = async (req, res) => {
   try {
     const NocturnalFees = await NMDTN.findAll(
-      { where: { type: "nocturnalFees" } }
+      { where: { type: "NocturnalFees" } }
     );
     res.json(NocturnalFees);
   } catch (error) {
@@ -31,7 +32,7 @@ export const NocturnalFeesReport = async (req, res) => {
 export const MAFeesReport = async (req, res) => {
   try {
     const MAFees = await NMDTN.findAll(
-      { where: { type: "mafees" } }
+      { where: { type: "MAFees" } }
     );
     res.json(MAFees);
   } catch (error) {
@@ -91,7 +92,7 @@ export const BuildingReport = async (req, res) => {
 export const VehicleReport = async (req, res) => {
   try {
     const vehicle = await BV.findAll(
-      { where: { type: "vehicles" } }
+      { where: { type: "vehicle" } }
     );
     res.json(vehicle);
   } catch (error) {
@@ -163,7 +164,7 @@ export const FarmaticProductsReport = async (req, res) => {
 export const AgricultureFarm = async (req, res) => {
   try {
     const agricultureFarm = await TwelveSection.findAll(
-      { where: { type: "agriculterFarm" } }
+      { where: { type: "agricultureFarm" } }
     );
     res.json(agricultureFarm);
   } catch (error) {
@@ -239,9 +240,7 @@ export const BicycleReport = async (req, res) => {
 export const incomeReport = async (req, res) => {
   try {
     const idcard = await IdCard.findAll({ where: { year: moment().format('jYYYY') } });
-    const bv = await BV.findAll({
-      where: { year: moment().format('jYYYY') }
-    });
+    const bv = await BV.findAll({ where: { year: moment().format('jYYYY') } });
     const nmdtn = await NMDTN.findAll({ where: { year: moment().format('jYYYY') } });
     const twelvesection = await TwelveSection.findAll({ where: { year: moment().format('jYYYY') } });
 
@@ -264,4 +263,107 @@ export const filterIncome = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+//! Filter by DATE
+function convertPersianToEnglish(number) {
+  const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+  const englishDigits = '0123456789';
+
+  let englishNumber = '';
+  for (let i = 0; i < number.length; i++) {
+    const digit = persianDigits.indexOf(number[i]);
+    if (digit !== -1) {
+      englishNumber += englishDigits[digit];
+    } else {
+      englishNumber += number[i];
+    }
+  }
+
+  return englishNumber;
+}
+
+
+export const searchByDate = async (req, res) => {
+
+  const { startDate, endDate } = req.query;
+
+  const converStartDate = convertPersianToEnglish(startDate);
+  const converEndDate = convertPersianToEnglish(endDate);
+
+  const formattedStartDate = moment(converStartDate, 'jYYYY-jMM-jDD').format('YYYY-MM-DD');
+  const formattedEndDate = moment(converEndDate, 'jYYYY-jMM-jDD').format('YYYY-MM-DD');
+
+  const idcard = await IdCard.findAll(
+    {
+      where: {
+        [Op.and]: [
+          {
+            createdAt: {
+              [Op.between]: [formattedStartDate, formattedEndDate]
+            }
+          },
+          {
+            pendant_date: {
+              [Op.not]: null
+            }
+          }
+        ]
+      }
+    })
+
+  const nmdtn = await NMDTN.findAll(
+    {
+      where: {
+        [Op.and]: [
+          {
+            createdAt: {
+              [Op.between]: [formattedStartDate, formattedEndDate]
+            }
+          },
+          {
+            pendant_date: {
+              [Op.not]: null
+            }
+          }
+        ]
+      }
+    })
+
+  const bv = await BV.findAll(
+    {
+      where: {
+        [Op.and]: [
+          {
+            createdAt: {
+              [Op.between]: [formattedStartDate, formattedEndDate]
+            }
+          },
+          {
+            pendant_date: {
+              [Op.not]: null
+            }
+          }
+        ]
+      }
+    })
+
+  const twelvesection = await TwelveSection.findAll({
+    where: {
+      [Op.and]: [
+        {
+          createdAt: {
+            [Op.between]: [formattedStartDate, formattedEndDate]
+          }
+        },
+        {
+          pendant_date: {
+            [Op.not]: null
+          }
+        }
+      ]
+    }
+  });
+
+  res.json([idcard, nmdtn, bv, twelvesection]);
 };

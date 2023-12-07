@@ -1,7 +1,7 @@
 import express from "express";
 
 
-import { createIdCard, deleteIdCard, getIdCards, getSingleIdCard, pendanteIdCard, searchIdCard, updateIdCard } from "../../controllers/income/IdCardController.js";
+import { createIdCard, getIdCards, getSingleIdCard, pendanteIdCard, searchIdCard, updateIdCard } from "../../controllers/income/IdCardController.js";
 
 
 const router = express.Router();
@@ -12,6 +12,5 @@ router.get("/IdCard/:id", getSingleIdCard);
 router.post("/IdCards", createIdCard);
 router.put("/IdCards/:id", pendanteIdCard);
 router.put("/IdCard/:id", updateIdCard);
-router.delete("/IdCards/:id", deleteIdCard);
 
 export default router;

@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Users from "../models/userModel.js";
 
-
 export const getAllUsers = async (req, res) => {
   try {
     const users = await Users.findAll({});
@@ -69,6 +68,9 @@ export const Login = async (req, res) => {
     const name = user[0].name;
     const email = user[0].email;
     const isAdmin = user[0].isAdmin;
+
+    req.session.userId = userId;
+    req.session.username = name;
 
     const accessToken = jwt.sign({
       userId, name, email, isAdmin

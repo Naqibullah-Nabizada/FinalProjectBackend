@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createNMDTN, deleteNMDTN, getNMDTN, getSingleNMDTN, pendanteNMDTN, searchNMDTN, updateNMDTN } from "../../controllers/income/NMDTNFeesController.js";
+import { createNMDTN, getNMDTN, getSingleNMDTN, pendanteNMDTN, searchNMDTN, updateNMDTN } from "../../controllers/income/NMDTNFeesController.js";
 
 const router = express.Router();
 
@@ -11,7 +11,6 @@ router.get("/NMDTN/nocturnalFees/:id", getSingleNMDTN);
 router.post("/NMDTN", createNMDTN);
 router.put("/NMDTN/:id", pendanteNMDTN);
 router.put("/updateNMDTN/:id", updateNMDTN);
-router.delete("/NMDTN/:id", deleteNMDTN);
 
 //! MA Fees
 router.get("/NMDTN/MAfees", getNMDTN);
@@ -20,7 +19,6 @@ router.get("/NMDTN/MAFees/:id", getSingleNMDTN);
 router.post("/NMDTN", createNMDTN);
 router.put("/updateNMDTN/:id", updateNMDTN);
 router.put("/NMDTN/:id", pendanteNMDTN);
-router.delete("/NMDTN/:id", deleteNMDTN);
 
 //! English Deploma
 router.get("/NMDTN/EnDeploma", getNMDTN);
@@ -29,7 +27,6 @@ router.get("/NMDTN/EnDeploma/:id", getSingleNMDTN);
 router.post("/NMDTN", createNMDTN);
 router.put("/NMDTN/:id", pendanteNMDTN);
 router.put("/updateNMDTN/:id", updateNMDTN);
-router.delete("/NMDTN/:id", deleteNMDTN);
 
 //! English Transcript
 router.get("/NMDTN/EnTranscript", getNMDTN);
@@ -38,7 +35,6 @@ router.get("/NMDTN/EnTranscript/:id", getSingleNMDTN);
 router.post("/NMDTN", createNMDTN);
 router.put("/NMDTN/:id", pendanteNMDTN);
 router.put("/updateNMDTN/:id", updateNMDTN);
-router.delete("/NMDTN/:id", deleteNMDTN);
 
 //! National Number Talbe
 router.get("/NMDTN/NationalNum", getNMDTN);
@@ -47,6 +43,5 @@ router.get("/NMDTN/NationalNum/:id", getSingleNMDTN);
 router.post("/NMDTN", createNMDTN);
 router.put("/NMDTN/:id", pendanteNMDTN);
 router.put("/updateNMDTN/:id", updateNMDTN);
-router.delete("/NMDTN/:id", deleteNMDTN);
 
 export default router;

@@ -18,7 +18,8 @@ const TwelveSection = db.define("twelve_section", {
   },
   maktub_num: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   reference: {
     type: DataTypes.STRING,

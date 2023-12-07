@@ -1,6 +1,6 @@
 import express from "express";
 
-import { AgricultureFarm, AnimalClinicReport, BakeryReport, BicycleReport, BreadReport, BuildingReport, EnDeplomaReport, EnTranscriptReport, FarmaticProductsReport, GuaranteedRecursiveReport, GuestHouseReport, KabulBankReport, MAFeesReport, MAFormsReport, NationalNumReport, NocturnalFeesReport, PaperReport, VehicleReport, idCardReport, incomeReport } from "../../controllers/report/incomeReportContr.js";
+import { AgricultureFarm, AnimalClinicReport, BakeryReport, BicycleReport, BreadReport, BuildingReport, EnDeplomaReport, EnTranscriptReport, FarmaticProductsReport, GuaranteedRecursiveReport, GuestHouseReport, KabulBankReport, MAFeesReport, MAFormsReport, NationalNumReport, NocturnalFeesReport, PaperReport, VehicleReport, idCardReport, incomeReport, searchByDate } from "../../controllers/report/incomeReportContr.js";
 
 const router = express.Router();
 
@@ -26,5 +26,9 @@ router.get("/income/report/animal-clinic", AnimalClinicReport);
 router.get("/income/report/kabul-bank", KabulBankReport);
 router.get("/income/report/bicycle", BicycleReport);
 
+
+//! Search By Date 
+
+router.get("/api/income/search", searchByDate);
 
 export default router;
