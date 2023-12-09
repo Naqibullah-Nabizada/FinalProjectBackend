@@ -125,33 +125,6 @@ export const createNMDTN = async (req, res) => {
 }
 
 
-//! Pendante NMDTN 
-export const pendanteNMDTN = async (req, res) => {
-  const result = await NMDTN.findOne({ where: { id: req.params.id } });
-
-  const pendant_num = req.body.pendant_num;
-  const pendant_date = req.body.pendant_date;
-  const remark = req.body.remark;
-
-  if (moment(req.body.pendant_date).format("jYYYY-MM-DD") > moment().format("jYYYY-MM-DD")) {
-    res.json({ error: "تاریخ آویز نا معتبر است" })
-  } else {
-
-    try {
-      const data = await result.update({
-        pendant_num: pendant_num,
-        pendant_date: pendant_date,
-        remark: remark,
-      }, { where: { id: req.params.id } })
-      res.json(data);
-
-    } catch (error) {
-      res.json({ error: "نمبر آویز قبلا ثبت شده است." })
-    }
-  }
-}
-
-
 //! Update NMDTN 
 export const updateNMDTN = async (req, res) => {
 
@@ -224,6 +197,52 @@ export const updateNMDTN = async (req, res) => {
       }
     } catch (error) {
       console.log(error)
+    }
+  }
+}
+
+
+//! Pendante NMDTN 
+export const pendanteNMDTN = async (req, res) => {
+
+  const userName = req.session.username;
+
+  const result = await NMDTN.findOne({ where: { id: req.params.id } });
+
+  const pendant_num = req.body.pendant_num;
+  const pendant_date = req.body.pendant_date;
+  const remark = req.body.remark;
+
+  if (moment(req.body.pendant_date).format("jYYYY-MM-DD") > moment().format("jYYYY-MM-DD")) {
+    res.json({ error: "تاریخ آویز نا معتبر است" })
+  } else {
+
+    try {
+      const data = await result.update({
+        pendant_num: pendant_num,
+        pendant_date: pendant_date,
+        remark: remark,
+      }, { where: { id: req.params.id } })
+      res.json(data);
+
+      if (result.type == "nocturnalFees") {
+        const logMessage = `آویز بانکی فیس محصلین برنامه های شبانه اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('NocturnalPendantedLogFile').info(logMessage);
+      } else if (result.type == "mafees") {
+        const logMessage = `آویز بانکی فیس محلصین برنامه های ماستری اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('MAFeesPendantedLogFile').info(logMessage);
+      } else if (result.type == "EnDeploma") {
+        const logMessage = `آویز بانکی دیپلوم زبان انگلیسی اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('EngDeplomaPendantedLogFile').info(logMessage);
+      } else if (result.type == "EnTranscript") {
+        const logMessage = `آویز بانکی ترانسکریپت زبان انگلیسی اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('EngTranscriptPendantedLogFile').info(logMessage);
+      } else {
+        const logMessage = `آویز بانکی جدول نمرات ملی اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('NationalNumTablePendantedLogFile').info(logMessage);
+      }
+    } catch (error) {
+      res.json({ error: "نمبر آویز قبلا ثبت شده است." })
     }
   }
 }

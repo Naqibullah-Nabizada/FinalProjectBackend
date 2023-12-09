@@ -286,7 +286,7 @@ function convertPersianToEnglish(number) {
 
 export const searchByDate = async (req, res) => {
 
-  const { startDate, endDate } = req.query;
+  const { startDate, endDate, selectedOption } = req.query;
 
   const converStartDate = convertPersianToEnglish(startDate);
   const converEndDate = convertPersianToEnglish(endDate);
@@ -294,76 +294,184 @@ export const searchByDate = async (req, res) => {
   const formattedStartDate = moment(converStartDate, 'jYYYY-jMM-jDD').format('YYYY-MM-DD');
   const formattedEndDate = moment(converEndDate, 'jYYYY-jMM-jDD').format('YYYY-MM-DD');
 
-  const idcard = await IdCard.findAll(
-    {
-      where: {
-        [Op.and]: [
-          {
-            createdAt: {
-              [Op.between]: [formattedStartDate, formattedEndDate]
+  if (selectedOption == "idcard") {
+    const idcard = await IdCard.findAll(
+      {
+        where: {
+          [Op.and]: [
+            {
+              createdAt: {
+                [Op.between]: [formattedStartDate, formattedEndDate]
+              }
+            },
+            {
+              pendant_date: {
+                [Op.not]: null
+              }
             }
-          },
-          {
-            pendant_date: {
-              [Op.not]: null
-            }
-          }
-        ]
-      }
-    })
-
-  const nmdtn = await NMDTN.findAll(
-    {
-      where: {
-        [Op.and]: [
-          {
-            createdAt: {
-              [Op.between]: [formattedStartDate, formattedEndDate]
-            }
-          },
-          {
-            pendant_date: {
-              [Op.not]: null
-            }
-          }
-        ]
-      }
-    })
-
-  const bv = await BV.findAll(
-    {
-      where: {
-        [Op.and]: [
-          {
-            createdAt: {
-              [Op.between]: [formattedStartDate, formattedEndDate]
-            }
-          },
-          {
-            pendant_date: {
-              [Op.not]: null
-            }
-          }
-        ]
-      }
-    })
-
-  const twelvesection = await TwelveSection.findAll({
-    where: {
-      [Op.and]: [
-        {
-          createdAt: {
-            [Op.between]: [formattedStartDate, formattedEndDate]
-          }
-        },
-        {
-          pendant_date: {
-            [Op.not]: null
-          }
+          ]
         }
-      ]
-    }
-  });
+      })
+    res.json(idcard)
 
-  res.json([idcard, nmdtn, bv, twelvesection]);
+  } else if (selectedOption == "nocturnalFees" || selectedOption == "mafees" || selectedOption == "enDeploma"
+    || selectedOption == "enTranscript" || selectedOption == "nationalNum") {
+    const nmdtn = await NMDTN.findAll(
+      {
+        where: {
+          [Op.and]: [
+            {
+              createdAt: {
+                [Op.between]: [formattedStartDate, formattedEndDate]
+              }
+            },
+            {
+              type: {
+                [Op.eq]: selectedOption
+              }
+            }
+            ,
+            {
+              pendant_date: {
+                [Op.not]: null
+              }
+            }
+          ]
+        }
+      })
+    res.json(nmdtn)
+  }
+  else if (selectedOption == "buildings" || selectedOption == "vehicle") {
+    const bv = await BV.findAll(
+      {
+        where: {
+          [Op.and]: [
+            {
+              createdAt: {
+                [Op.between]: [formattedStartDate, formattedEndDate]
+              }
+            },
+            {
+              type: {
+                [Op.eq]: selectedOption
+              }
+            }
+            ,
+            {
+              pendant_date: {
+                [Op.not]: null
+              }
+            }
+          ]
+        }
+      })
+    res.json(bv)
+
+  } else if (selectedOption == "bakery" || selectedOption == "bread" || selectedOption == "paper"
+    || selectedOption == "farmaticProducts" || selectedOption == "agricultureFarm" ||
+    selectedOption == "guaranteedRecursive" || selectedOption == "guestHouse" || selectedOption == "bicycle"
+    || selectedOption == "kabulBank" || selectedOption == "animalClinic" || selectedOption == "maforms") {
+    const twelvesection = await TwelveSection.findAll(
+      {
+        where: {
+          [Op.and]: [
+            {
+              createdAt: {
+                [Op.between]: [formattedStartDate, formattedEndDate]
+              }
+            },
+            {
+              type: {
+                [Op.eq]: selectedOption
+              }
+            }
+            ,
+            {
+              pendant_date: {
+                [Op.not]: null
+              }
+            }
+          ]
+        }
+      })
+    res.json(twelvesection)
+  }
+  else if (selectedOption == "all") {
+
+    const idcard = await IdCard.findAll(
+      {
+        where: {
+          [Op.and]: [
+            {
+              createdAt: {
+                [Op.between]: [formattedStartDate, formattedEndDate]
+              }
+            },
+            {
+              pendant_date: {
+                [Op.not]: null
+              }
+            }
+          ]
+        }
+      })
+
+    const nmdtn = await NMDTN.findAll(
+      {
+        where: {
+          [Op.and]: [
+            {
+              createdAt: {
+                [Op.between]: [formattedStartDate, formattedEndDate]
+              }
+            },
+            {
+              pendant_date: {
+                [Op.not]: null
+              }
+            }
+          ]
+        }
+      })
+
+    const bv = await BV.findAll(
+      {
+        where: {
+          [Op.and]: [
+            {
+              createdAt: {
+                [Op.between]: [formattedStartDate, formattedEndDate]
+              }
+            },
+            {
+              pendant_date: {
+                [Op.not]: null
+              }
+            }
+          ]
+        }
+      })
+
+    const twelvesection = await TwelveSection.findAll({
+      where: {
+        [Op.and]: [
+          {
+            createdAt: {
+              [Op.between]: [formattedStartDate, formattedEndDate]
+            }
+          },
+          {
+            pendant_date: {
+              [Op.not]: null
+            }
+          }
+        ]
+      }
+    });
+
+    res.json([idcard, nmdtn, bv, twelvesection]);
+  } else {
+    res.json([]);
+  }
+
 };

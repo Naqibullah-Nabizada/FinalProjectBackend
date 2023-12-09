@@ -100,7 +100,6 @@ export const createTwelveSection = async (req, res) => {
       res.json(data);
 
       if (type == "bakery") {
-        // const logMessage = `پوهنحًی ایجاد شد:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
         const logMessage = `عواید کرایه خبازی اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
         logger('BakeryCreatedLogFile').info(logMessage);
 
@@ -248,6 +247,9 @@ export const updateTwelveSection = async (req, res) => {
 
 //! Pendante TwelveSection 
 export const pendanteTwelveSection = async (req, res) => {
+
+  const userName = req.session.username;
+
   const result = await TwelveSection.findOne({ where: { id: req.params.id } });
 
   const pendant_num = req.body.pendant_num;
@@ -266,8 +268,53 @@ export const pendanteTwelveSection = async (req, res) => {
       }, { where: { id: req.params.id } });
       res.json(data);
 
+      if (result.type == "bakery") {
+        const logMessage = `آویز بانکی کرایه خبازی اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('BakeryPendantedLogFile').info(logMessage);
+
+      } else if (result.type == "hostelBread") {
+        const logMessage = `آویز بانکی فروش نان قاق لیلیه اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('BreadPendantedLogFile').info(logMessage);
+
+      } else if (result.type == "paper") {
+        const logMessage = `آویز بانکی فروش ضایعات کاغذ آمریت نشرات اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('PaperPendantedLogFile').info(logMessage);
+
+      } else if (result.type == "guestHouse") {
+        const logMessage = `آویز بانکی کرایه مهمانخانه آمریت خدمات اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('GuestHousePendantedLogFile').info(logMessage);
+
+      } else if (result.type == "farmaticProducts") {
+        const logMessage = `آویز بانکی محصولات تجزیه فارمسوتیکی اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('FarmaticProductsPendantedLogFile').info(logMessage);
+
+      } else if (result.type == "agricultureFarm") {
+        const logMessage = `آویز بانکی فارم تحقیقاتی پوهنزی زراعت اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('AgricultureFarmPendantedLogFile').info(logMessage);
+
+      } else if (result.type == "maforms") {
+        const logMessage = `آویز بانکی فورم های ماستری اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('MAFormsPendantedLogFile').info(logMessage);
+
+      } else if (result.type == "animalClinic") {
+        const logMessage = `آویز بانکی کلینیک حیوانی پوهنزی وترنری اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('AnimalClinicPendantedLogFile').info(logMessage);
+
+      } else if (result.type == "guaranteedRecursive") {
+        const logMessage = `آویز بانکی تضمین و بازگشتی اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('GuaranteedRecursivePendantedLogFile').info(logMessage);
+
+      } else if (result.type == "kabulBank") {
+        const logMessage = `آویز بانکی کرایه نمایندگی کابل بانک اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('KabulBankPendantedLogFile').info(logMessage);
+
+      } else {
+        const logMessage = `آویز بانکی بایسکل نگهبانی اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('BicyclePendantedLogFile').info(logMessage);
+      }
+
     } catch (error) {
-      res.json({ error: "نمبر آویز یا نمبر مکتوب قبلا ثبت شده است." })
+      res.json({ error: "نمبر آویز قبلا ثبت شده است." })
     }
   }
 }

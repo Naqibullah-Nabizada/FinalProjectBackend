@@ -106,7 +106,7 @@ function convertPersianToEnglish(number) {
 
 export const searchByDate = async (req, res) => {
 
-  const { startDate, endDate } = req.query;
+  const { startDate, endDate, selectedOption } = req.query;
 
   const converStartDate = convertPersianToEnglish(startDate);
   const converEndDate = convertPersianToEnglish(endDate);
@@ -114,27 +114,68 @@ export const searchByDate = async (req, res) => {
   const formattedStartDate = moment(converStartDate, 'jYYYY-jMM-jDD').format('YYYY-MM-DD');
   const formattedEndDate = moment(converEndDate, 'jYYYY-jMM-jDD').format('YYYY-MM-DD');
 
-  const searchResults = await FaselDetails.findAll(
-    {
-      attributes: [
-        'faselId',
-        'date',
-        'desc',
-        [Sequelize.literal('SUM(befor_pay)'), 'befor_pay'],
-        [Sequelize.literal('SUM(after_pay)'), 'after_pay'],
-        'income',
-        'commitment',
-        'commitment_transfer'
-      ],
-      include: [Fasel],
-      group: ['faselId'],
-      order: [['faselId', 'DESC']],
-      where: {
-        date: {
-          [Op.between]: [formattedStartDate, formattedEndDate]
+  if (selectedOption !== "all" && selectedOption !== "" && selectedOption !== null) {
+
+    const searchResults = await FaselDetails.findAll(
+      {
+        attributes: [
+          'faselId',
+          'date',
+          'desc',
+          [Sequelize.literal('SUM(befor_pay)'), 'befor_pay'],
+          [Sequelize.literal('SUM(after_pay)'), 'after_pay'],
+          'income',
+          'commitment',
+          'commitment_transfer'
+        ],
+        include: [Fasel],
+        group: ['faselId'],
+        order: [['faselId', 'DESC']],
+        where: {
+          [Op.and]: [
+            {
+              date: {
+                [Op.between]: [formattedStartDate, formattedEndDate]
+              }
+            },
+            {
+              faselId: {
+                [Op.eq]: selectedOption
+              }
+            }
+          ]
         }
       }
-    }
-  );
-  res.json(searchResults);
+    );
+    res.json(searchResults);
+
+  } else if (selectedOption == "all") {
+    const searchResults = await FaselDetails.findAll(
+      {
+        attributes: [
+          'faselId',
+          'date',
+          'desc',
+          [Sequelize.literal('SUM(befor_pay)'), 'befor_pay'],
+          [Sequelize.literal('SUM(after_pay)'), 'after_pay'],
+          'income',
+          'commitment',
+          'commitment_transfer'
+        ],
+        include: [Fasel],
+        group: ['faselId'],
+        order: [['faselId', 'DESC']],
+        where: {
+          date: {
+            [Op.between]: [formattedStartDate, formattedEndDate]
+          }
+        }
+      }
+    );
+    res.json(searchResults);
+  } else {
+    res.json([]);
+  }
+
+
 };

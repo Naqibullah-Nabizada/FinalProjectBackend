@@ -164,6 +164,8 @@ export const updateBV = async (req, res) => {
 }
 //! Pendante BV 
 export const pendanteBV = async (req, res) => {
+
+  const userName = req.session.username;
   
   const result = await BV.findOne({ where: { id: req.params.id } });
 
@@ -182,6 +184,14 @@ export const pendanteBV = async (req, res) => {
         remark: remark,
       }, { where: { id: req.params.id } })
       res.json(data);
+
+      if (result.type == "buildings") {
+        const logMessage = `آویز بانکی کرایه اپارتمان های استادان اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('BuildingsPendantedLogFile').info(logMessage);
+      } else {
+        const logMessage = `آویز بانکی کارت های وسایط نقلیه اضافه شد.:\nمعلومات اضافه شده: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`;
+        logger('VehiclesPendantedLogFile').info(logMessage);
+      }
     } catch (error) {
       res.json({ error: "نمبر آویز قبلا ثبت شده است." })
     }

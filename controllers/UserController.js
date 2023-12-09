@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import logger from "../models/logModel.js";
 import Users from "../models/userModel.js";
 
 export const getAllUsers = async (req, res) => {
@@ -26,6 +27,8 @@ export const getSingleUser = async (req, res) => {
 
 export const Register = async (req, res) => {
 
+  const userName = req.session.username;
+
   const { name, email, password, confPassword, isAdmin } = req.body;
 
   if (password !== confPassword) {
@@ -42,12 +45,14 @@ export const Register = async (req, res) => {
     if (found) {
       return res.json({ error: "ایمیل قبلا ثبت نام کرده است" });
     }
-    await Users.create({
+    const data = await Users.create({
       name: name, email: email, password: hashPassword, isAdmin: isAdmin,
     });
     res.json({
       message: "ثبت نام موفقیت آمیز بود"
     });
+    const logMessage = `ادمین جدید ثبت نام شد.: ${JSON.stringify(data)}\n مدیر مسِوًول:${userName}`
+    logger('RegisterUserLogFile').info(logMessage);
   } catch (error) {
     console.log(error);
   }
@@ -101,6 +106,8 @@ export const Login = async (req, res) => {
     })
 
     res.json({ userId, name, email, isAdmin, accessToken, msg: "شما با موفقیت وارد شدید" });
+    const logMessage = `ادمین وارد سایت شد. \n ادمین وارد شده:${name}`
+    logger('LoginLogFile').info(logMessage);
   } catch (error) {
     res.json({
       error: "کاربر وجود ندارد"
@@ -132,6 +139,9 @@ export const Logout = async (req, res) => {
 
 
 export const deleteUser = async (req, res) => {
+
+  const userName = req.session.username;
+
   const user = await Users.findOne({
     where: {
       id: req.params.id
@@ -144,7 +154,10 @@ export const deleteUser = async (req, res) => {
         id: req.params.id
       }
     })
-    res.json({ message: "کاربر با موفقیت حذف شد" })
+    res.json({ message: "کاربر با موفقیت حذف شد" });
+
+    const logMessage = `ادمین حذف شد.: ${JSON.stringify(user.name)}\n مدیر مسِوًول:${userName}`
+    logger('DeleteUserLogFile').info(logMessage);
   } catch (error) {
     console.log(error);
   }
@@ -171,7 +184,6 @@ export const updateUser = async (req, res) => {
       }
     })
     res.json({ message: "ویرایش موفقیت آمیز بود" })
-
   } catch (error) {
     console.log(error);
   }
