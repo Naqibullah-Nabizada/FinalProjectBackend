@@ -165,6 +165,9 @@ export const deleteUser = async (req, res) => {
 
 
 export const updateUser = async (req, res) => {
+
+  const userName = req.session.username;
+
   const { name, email, password, confPassword, isAdmin } = req.body;
   if (password !== confPassword) {
     return res.json({ error: "پسوورد و تکرار آن با هم برابر نیستند" })
@@ -184,6 +187,8 @@ export const updateUser = async (req, res) => {
       }
     })
     res.json({ message: "ویرایش موفقیت آمیز بود" })
+    const logMessage = `ادمین ویرایش شد.\n مدیر مسِوًول:${userName}`
+    logger('UpdateUserLogFile').info(logMessage);
   } catch (error) {
     console.log(error);
   }
